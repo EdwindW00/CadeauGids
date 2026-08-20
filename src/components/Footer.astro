@@ -1,0 +1,66 @@
+---
+const jaar = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="disclaimer">
+      🎁 <strong>CadeauGids</strong> werkt (deels) met affiliate-links. Als je via
+      een link op deze site iets koopt, ontvangen wij mogelijk een kleine
+      commissie -- zonder extra kosten voor jou. Lees meer in onze
+      <a href="/disclaimer/">affiliate-disclaimer</a>.
+    </p>
+
+    <nav aria-label="Footer-navigatie" class="footer-nav">
+      <a href="/disclaimer/">Affiliate-disclaimer</a>
+      <a href="/privacy/">Privacy- en cookiebeleid</a>
+    </nav>
+
+    <p class="copyright">
+      &copy; {jaar} CadeauGids. <!-- TODO (opdrachtgever): vul hier eventueel KvK-nummer / bedrijfsnaam aan. -->
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 4rem;
+    background: var(--color-bg-alt);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .footer-inner {
+    padding-block: 2.5rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .disclaimer {
+    color: var(--color-text-muted);
+    font-size: 0.92rem;
+    max-width: 65ch;
+  }
+
+  .footer-nav {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-nav a {
+    color: var(--color-text);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+
+  .footer-nav a:hover {
+    color: var(--color-primary-dark);
+  }
+
+  .copyright {
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    margin: 0;
+  }
+</style>

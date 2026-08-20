@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { categorieen } from '../data/categorieen';
+
+const title = 'CadeauGids — cadeau-ideeën per persoon en gelegenheid';
+const description =
+  'Vind snel een passend cadeau voor mama, papa, je partner, zus, broer of Sinterklaas. Overzichtelijke cadeau-ideeën, gesorteerd per persoon en gelegenheid.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="hero container">
+    <span class="badge">Cadeau-ideeën, overzichtelijk per persoon</span>
+    <h1>Op zoek naar het perfecte cadeau?</h1>
+    <p class="hero-tekst">
+      CadeauGids verzamelt cadeau-ideeën per ontvanger en gelegenheid, zodat je niet
+      eindeloos hoeft te scrollen door webshops. Kies hieronder voor wie je een
+      cadeau zoekt en blader door onze suggesties.
+    </p>
+  </section>
+
+  <section class="container">
+    <h2>Kies een categorie</h2>
+    <div class="grid grid-categorieen">
+      {
+        categorieen.map((cat) => (
+          <a class="card categorie-card" href={`/cadeaus/${cat.slug}/`}>
+            {cat.seizoensgebonden && <span class="badge">Seizoensgebonden</span>}
+            <h3>{cat.titel}</h3>
+            <p>{cat.intro[0]}</p>
+            <span class="lees-meer">Bekijk cadeau-ideeën →</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container hoe-werkt-het">
+    <h2>Hoe werkt CadeauGids?</h2>
+    <p>
+      We zetten per categorie een aantal cadeau-ideeën op een rij, met een korte
+      omschrijving en prijsindicatie. Sommige links zijn (of worden) affiliate-links:
+      als je via zo'n link iets koopt, ontvangen wij mogelijk een kleine commissie,
+      zonder dat dit iets kost voor jou. Meer weten? Lees onze
+      <a href="/disclaimer/">affiliate-disclaimer</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    max-width: 70ch;
+  }
+
+  .hero-tekst {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+  }
+
+  .categorie-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--color-text);
+    position: relative;
+  }
+
+  .categorie-card h3 {
+    font-size: 1.15rem;
+  }
+
+  .categorie-card p {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .lees-meer {
+    margin-top: auto;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .hoe-werkt-het {
+    margin-block: 3rem;
+    max-width: 70ch;
+  }
+
+  .hoe-werkt-het p {
+    color: var(--color-text-muted);
+  }
+</style>

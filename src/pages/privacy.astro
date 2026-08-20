@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Privacy- en cookiebeleid | CadeauGids';
+const description = 'Lees hoe CadeauGids omgaat met persoonsgegevens en welke cookies er (mogelijk) gebruikt worden.';
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="container tekstpagina">
+    <h1>Privacy- en cookiebeleid</h1>
+
+    <p>
+      <!-- TODO (opdrachtgever): vul bedrijfsnaam / eigenaar van de site in. -->
+      <span class="placeholder">[BEDRIJFSNAAM / EIGENAAR INVULLEN]</span>, eigenaar van
+      CadeauGids, respecteert de privacy van bezoekers van deze website. Deze pagina
+      legt uit welke gegevens er worden verzameld en waarvoor.
+    </p>
+
+    <h2>Welke gegevens verzamelen we?</h2>
+    <p>
+      CadeauGids is een statische website zonder gebruikersaccounts, formulieren die
+      persoonsgegevens opslaan, of eigen tracking. We verzamelen dus in principe
+      <strong>geen</strong> persoonsgegevens rechtstreeks via deze site.
+    </p>
+
+    <h2>Cookies via affiliate-links</h2>
+    <p>
+      Wanneer je op een affiliate-link klikt (bijvoorbeeld naar bol.com, TradeTracker
+      of Awin), kan de partnerwebsite of het affiliate-netwerk een cookie plaatsen om
+      bij te houden dat de aankoop via CadeauGids tot stand kwam. Dit gebeurt op het
+      moment dat je de externe website bezoekt, niet op CadeauGids zelf. Voor het
+      cookiebeleid van die partners verwijzen we naar hun eigen privacyverklaring.
+    </p>
+
+    <h2>Analytics / statistieken</h2>
+    <p>
+      <!-- TODO (opdrachtgever): pas aan zodra er eventueel analytics (bv. een
+      privacyvriendelijke, cookie-loze tool) wordt toegevoegd, en vermeld dit hier. -->
+      Op dit moment gebruikt CadeauGids geen analytics-tool. Mocht dit in de toekomst
+      wijzigen, dan wordt deze pagina bijgewerkt.
+    </p>
+
+    <h2>Jouw rechten</h2>
+    <p>
+      Omdat we geen persoonsgegevens opslaan, zijn er in de praktijk geen gegevens om
+      in te zien, aan te passen of te verwijderen. Heb je desondanks een vraag over
+      privacy op deze site? Neem contact op via
+      <span class="placeholder">[E-MAILADRES INVULLEN]</span>.
+    </p>
+
+    <h2>Contactgegevens</h2>
+    <p>
+      <!-- TODO (opdrachtgever): vul bedrijfs-/contactgegevens in (naam, adres, KvK). -->
+      <span class="placeholder">[BEDRIJFSNAAM]</span><br />
+      <span class="placeholder">[ADRES]</span><br />
+      <span class="placeholder">[KVK-NUMMER, indien van toepassing]</span>
+    </p>
+
+    <p class="laatst-bijgewerkt">
+      <!-- TODO (opdrachtgever): datum bijwerken bij wijzigingen. -->
+      Laatst bijgewerkt: [DATUM INVULLEN]
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .tekstpagina {
+    padding-block: 2.5rem 4rem;
+    max-width: 70ch;
+  }
+
+  .tekstpagina p,
+  .tekstpagina li {
+    color: var(--color-text-muted);
+  }
+
+  .placeholder {
+    background: var(--color-bg-alt);
+    padding: 0.1em 0.5em;
+    border-radius: 4px;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .laatst-bijgewerkt {
+    font-size: 0.85rem;
+    margin-top: 2rem;
+  }
+</style>

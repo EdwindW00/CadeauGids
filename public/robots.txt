@@ -1,0 +1,6 @@
+# TODO (opdrachtgever): pas de sitemap-URL hieronder aan zodra het
+# definitieve domein bekend is (zie ook astro.config.mjs > SITE_URL).
+User-agent: *
+Allow: /
+
+Sitemap: https://www.cadeaugids-voorbeeld.nl/sitemap-index.xml

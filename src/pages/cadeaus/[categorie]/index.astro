@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ProductCard from '../../../components/ProductCard.astro';
+import CategoryFilters from '../../../components/CategoryFilters.astro';
+import { categorieen } from '../../../data/categorieen';
+
+export async function getStaticPaths() {
+  return categorieen.map((categorie) => ({
+    params: { categorie: categorie.slug },
+    props: { categorie },
+  }));
+}
+
+const { categorie } = Astro.props;
+
+const alleProducten = await getCollection('producten', (entry) => entry.data.categorie === categorie.slug);
+// Uitgelichte producten eerst.
+const producten = alleProducten.sort((a, b) => Number(b.data.uitgelicht) - Number(a.data.uitgelicht));
+---
+
+<BaseLayout title={categorie.metaTitle} description={categorie.metaDescription}>
+  <section class="container categorie-intro">
+    {categorie.seizoensgebonden && <span class="badge">Seizoensgebonden — jaarlijks te verversen</span>}
+    <h1>{categorie.titel}</h1>
+    {categorie.intro.map((paragraaf: string) => <p>{paragraaf}</p>)}
+  </section>
+
+  <section class="container">
+    {producten.length > 0 && <CategoryFilters />}
+
+    {
+      producten.length > 0 ? (
+        <div class="grid grid-producten" data-producten-grid>
+          {producten.map((product) => <ProductCard product={product} />)}
+        </div>
+      ) : (
+        <p class="geen-producten">
+          Voor deze categorie zijn nog geen cadeau-ideeën toegevoegd. Voeg markdown-bestanden
+          toe in <code>src/content/producten/{categorie.slug}/</code>.
+        </p>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .categorie-intro {
+    padding-block: 2.5rem 1.5rem;
+    max-width: 70ch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .categorie-intro p {
+    color: var(--color-text-muted);
+  }
+
+  .geen-producten {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .geen-producten code {
+    background: var(--color-bg-alt);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+  }
+</style>

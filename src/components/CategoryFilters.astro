@@ -1,0 +1,100 @@
+---
+// Simpel, progressive-enhancement filter: werkt volledig zonder JS (alle
+// producten zichtbaar), en filtert client-side op prijssegment/leeftijd
+// zodra JS beschikbaar is. Geen framework/build-stap nodig.
+---
+
+<div class="filters" data-filters>
+  <div class="filter-groep">
+    <label for="filter-prijs">Prijssegment</label>
+    <select id="filter-prijs" data-filter="prijssegment">
+      <option value="">Alle prijzen</option>
+      <option value="budget">Budget</option>
+      <option value="midden">Middensegment</option>
+      <option value="premium">Premium</option>
+    </select>
+  </div>
+
+  <div class="filter-groep">
+    <label for="filter-leeftijd">Leeftijd</label>
+    <select id="filter-leeftijd" data-filter="leeftijd">
+      <option value="">Alle leeftijden</option>
+      <option value="kind">Kind</option>
+      <option value="tiener">Tiener</option>
+      <option value="volwassene">Volwassene</option>
+      <option value="senior">Senior</option>
+    </select>
+  </div>
+
+  <p class="filter-leeg" data-filter-leeg hidden>Geen cadeaus gevonden met deze filters.</p>
+</div>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .filter-groep {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .filter-groep label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+  }
+
+  .filter-groep select {
+    padding: 0.5em 0.8em;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background: var(--color-card-bg);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-text);
+  }
+
+  .filter-leeg {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+</style>
+
+<script>
+  function initFilters() {
+    const filterWrap = document.querySelector('[data-filters]');
+    const grid = document.querySelector('[data-producten-grid]');
+    if (!filterWrap || !grid) return;
+
+    const selects = filterWrap.querySelectorAll<HTMLSelectElement>('select[data-filter]');
+    const leegMelding = filterWrap.querySelector<HTMLElement>('[data-filter-leeg]');
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.product-card'));
+
+    function toepassen() {
+      const actief: Record<string, string> = {};
+      selects.forEach((select) => {
+        const key = select.dataset.filter;
+        if (key && select.value) actief[key] = select.value;
+      });
+
+      let zichtbaar = 0;
+      cards.forEach((card) => {
+        const matcht = Object.entries(actief).every(([key, waarde]) => card.dataset[key] === waarde);
+        card.hidden = !matcht;
+        if (matcht) zichtbaar++;
+      });
+
+      if (leegMelding) leegMelding.hidden = zichtbaar !== 0;
+    }
+
+    selects.forEach((select) => select.addEventListener('change', toepassen));
+  }
+
+  initFilters();
+</script>

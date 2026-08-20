@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Pagina niet gevonden | CadeauGids" description="Deze pagina bestaat niet (meer).">
+  <section class="container niet-gevonden">
+    <span class="badge">404</span>
+    <h1>Deze pagina konden we niet vinden</h1>
+    <p>Misschien is de link verouderd, of is er een typefoutje geslopen in het adres.</p>
+    <a class="btn" href="/">Terug naar de homepage</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .niet-gevonden {
+    padding-block: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    align-items: flex-start;
+    max-width: 60ch;
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Affiliate-disclaimer | CadeauGids';
+const description = 'Lees hoe CadeauGids gebruikmaakt van affiliate-links en hoe dat de cadeau-suggesties op deze site beïnvloedt.';
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="container tekstpagina">
+    <h1>Affiliate-disclaimer</h1>
+
+    <p>
+      CadeauGids helpt bezoekers bij het vinden van cadeau-ideeën. Om deze site te
+      kunnen onderhouden, maken we (deels) gebruik van <strong>affiliate-links</strong>.
+      Dit betekent dat we mogelijk een kleine commissie ontvangen wanneer je via een
+      link op deze site iets koopt bij een van onze partners. Dit kost jou als
+      bezoeker niets extra.
+    </p>
+
+    <h2>Met welke partners werken we (samen)?</h2>
+    <p>
+      Producten op deze site kunnen doorlinken naar onder andere bol.com
+      (Partnerprogramma), TradeTracker en/of Awin. Bij elk product staat aangegeven
+      via welk netwerk de link loopt, of dat het (nog) geen affiliate-link is.
+    </p>
+
+    <h2>Onafhankelijke selectie</h2>
+    <p>
+      De keuze welke producten we tonen wordt gemaakt op basis van relevantie voor de
+      betreffende categorie, niet uitsluitend op basis van commissiehoogte. Een
+      commissie kan echter wél meespelen bij het uiteindelijke aanbod.
+    </p>
+
+    <h2>Vragen</h2>
+    <p>
+      Heb je vragen over deze disclaimer? Neem contact op via
+      <!-- TODO (opdrachtgever): vul hier een contact-e-mailadres in. -->
+      <span class="placeholder">[E-MAILADRES INVULLEN]</span>.
+    </p>
+
+    <p class="laatst-bijgewerkt">
+      <!-- TODO (opdrachtgever): datum bijwerken bij wijzigingen. -->
+      Laatst bijgewerkt: [DATUM INVULLEN]
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .tekstpagina {
+    padding-block: 2.5rem 4rem;
+    max-width: 70ch;
+  }
+
+  .tekstpagina p,
+  .tekstpagina li {
+    color: var(--color-text-muted);
+  }
+
+  .placeholder {
+    background: var(--color-bg-alt);
+    padding: 0.1em 0.5em;
+    border-radius: 4px;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .laatst-bijgewerkt {
+    font-size: 0.85rem;
+    margin-top: 2rem;
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  product: CollectionEntry<'producten'>;
+}
+
+const { product } = Astro.props;
+const { naam, beschrijving, afbeelding, prijsindicatie, link, netwerk, prijssegment, leeftijd, uitgelicht } =
+  product.data;
+
+// Zodra `netwerk` iets anders is dan 'n.v.t.' (dus een echte affiliate-link),
+// wordt de link automatisch als gesponsord/nofollow gemarkeerd. De
+// opdrachtgever hoeft dus alleen het databestand aan te passen -- niet de
+// code -- om dit goed te krijgen.
+const isAffiliate = netwerk !== 'n.v.t.';
+const relAttr = ['noopener', ...(isAffiliate ? ['sponsored', 'nofollow'] : [])].join(' ');
+---
+
+<article class:list={['card product-card', { uitgelicht }]} data-prijssegment={prijssegment} data-leeftijd={leeftijd}>
+  {uitgelicht && <span class="badge badge-uitgelicht">Uitgelicht</span>}
+  <img src={afbeelding} alt={naam} loading="lazy" width="600" height="400" />
+  <div class="product-body">
+    <h3>{naam}</h3>
+    <p class="beschrijving">{beschrijving}</p>
+    <div class="meta">
+      <span class="prijs">{prijsindicatie}</span>
+      {netwerk !== 'n.v.t.' && <span class="netwerk">via {netwerk}</span>}
+    </div>
+    <a class="btn btn-product" href={link} target="_blank" rel={relAttr}>
+      Bekijk cadeau
+    </a>
+  </div>
+</article>
+
+<style>
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .product-card img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    background: var(--color-bg-alt);
+  }
+
+  .badge-uitgelicht {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 1;
+  }
+
+  .product-body {
+    padding: 1rem 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .product-body h3 {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .beschrijving {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    flex: 1;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+  }
+
+  .prijs {
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  .netwerk {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  .btn-product {
+    justify-content: center;
+    margin-top: 0.25rem;
+  }
+</style>

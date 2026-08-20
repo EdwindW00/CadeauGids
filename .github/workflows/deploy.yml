@@ -1,0 +1,56 @@
+name: Deploy naar GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Nodig zodat de workflow naar GitHub Pages mag publiceren.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Laat maar één deploy tegelijk lopen; wacht nieuwe pushes niet in de wachtrij,
+# maar maak de lopende run niet af als er alweer een nieuwe push is.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installeer dependencies
+        run: npm ci
+
+      - name: Configureer GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build de site
+        run: npm run build
+
+      - name: Upload build-artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy naar GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
