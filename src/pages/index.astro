@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { categorieen } from '../data/categorieen';
+import { withBase } from '../utils/url';
 
 const title = 'CadeauGids — cadeau-ideeën per persoon en gelegenheid';
 const description =
@@ -23,7 +24,7 @@ const description =
     <div class="grid grid-categorieen">
       {
         categorieen.map((cat) => (
-          <a class="card categorie-card" href={`/cadeaus/${cat.slug}/`}>
+          <a class="card categorie-card" href={withBase(`cadeaus/${cat.slug}/`)}>
             {cat.seizoensgebonden && <span class="badge">Seizoensgebonden</span>}
             <h3>{cat.titel}</h3>
             <p>{cat.intro[0]}</p>
@@ -41,7 +42,7 @@ const description =
       omschrijving en prijsindicatie. Sommige links zijn (of worden) affiliate-links:
       als je via zo'n link iets koopt, ontvangen wij mogelijk een kleine commissie,
       zonder dat dit iets kost voor jou. Meer weten? Lees onze
-      <a href="/disclaimer/">affiliate-disclaimer</a>.
+      <a href={withBase('disclaimer/')}>affiliate-disclaimer</a>.
     </p>
   </section>
 </BaseLayout>

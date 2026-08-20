@@ -1,19 +1,19 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// TODO (opdrachtgever): vervang dit door het definitieve domein zodra dat
-// geregistreerd is. Deze URL wordt gebruikt voor de sitemap en canonical
-// links, dus moet kloppen voordat de site live gaat.
-const SITE_URL = 'https://www.cadeaugids-voorbeeld.nl';
+// TODO (opdrachtgever): vervang dit door het definitieve custom domein
+// zodra dat geregistreerd is (en zet `base` hieronder dan terug op '/').
+// Tot die tijd draait de site op de GitHub Pages-projecturl.
+const SITE_URL = 'https://edwindw00.github.io/CadeauGids/';
 
 export default defineConfig({
   site: SITE_URL,
   integrations: [sitemap()],
   trailingSlash: 'always',
 
-  // Als de site (nog) niet op een custom domein staat maar op
-  // https://<gebruiker>.github.io/<repo-naam>/, zet dan `base` op
-  // '/<repo-naam>/' -- laat dit op '/' staan zodra een custom domein
-  // (via public/CNAME) gebruikt wordt.
-  base: '/',
+  // De site draait nu op https://edwindw00.github.io/CadeauGids/ (geen
+  // custom domein), dus alle interne links moeten onder /CadeauGids/ vallen.
+  // TODO (opdrachtgever): zet dit terug op '/' zodra je `public/CNAME` met
+  // een custom domein toevoegt (zie README.md > "Custom domein koppelen").
+  base: '/CadeauGids/',
 });

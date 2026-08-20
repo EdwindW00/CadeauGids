@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../utils/url';
+
 const jaar = new Date().getFullYear();
 ---
 
@@ -8,12 +10,12 @@ const jaar = new Date().getFullYear();
       🎁 <strong>CadeauGids</strong> werkt (deels) met affiliate-links. Als je via
       een link op deze site iets koopt, ontvangen wij mogelijk een kleine
       commissie -- zonder extra kosten voor jou. Lees meer in onze
-      <a href="/disclaimer/">affiliate-disclaimer</a>.
+      <a href={withBase('disclaimer/')}>affiliate-disclaimer</a>.
     </p>
 
     <nav aria-label="Footer-navigatie" class="footer-nav">
-      <a href="/disclaimer/">Affiliate-disclaimer</a>
-      <a href="/privacy/">Privacy- en cookiebeleid</a>
+      <a href={withBase('disclaimer/')}>Affiliate-disclaimer</a>
+      <a href={withBase('privacy/')}>Privacy- en cookiebeleid</a>
     </nav>
 
     <p class="copyright">

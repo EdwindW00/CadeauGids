@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../utils/url';
 
 interface Props {
   product: CollectionEntry<'producten'>;
@@ -15,11 +16,15 @@ const { naam, beschrijving, afbeelding, prijsindicatie, link, netwerk, prijssegm
 // code -- om dit goed te krijgen.
 const isAffiliate = netwerk !== 'n.v.t.';
 const relAttr = ['noopener', ...(isAffiliate ? ['sponsored', 'nofollow'] : [])].join(' ');
+
+// Een lokaal pad (bv. '/images/mijn-foto.jpg') moet door de `base`-config
+// heen; een volledige URL (https://...) van de opdrachtgever laten we ongewijzigd.
+const imgSrc = /^https?:\/\//.test(afbeelding) ? afbeelding : withBase(afbeelding);
 ---
 
 <article class:list={['card product-card', { uitgelicht }]} data-prijssegment={prijssegment} data-leeftijd={leeftijd}>
   {uitgelicht && <span class="badge badge-uitgelicht">Uitgelicht</span>}
-  <img src={afbeelding} alt={naam} loading="lazy" width="600" height="400" />
+  <img src={imgSrc} alt={naam} loading="lazy" width="600" height="400" />
   <div class="product-body">
     <h3>{naam}</h3>
     <p class="beschrijving">{beschrijving}</p>

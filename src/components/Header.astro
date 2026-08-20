@@ -1,12 +1,13 @@
 ---
 import { categorieen } from '../data/categorieen';
+import { withBase } from '../utils/url';
 
 const pad = Astro.url.pathname;
 ---
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="/" class="logo">
+    <a href={withBase('')} class="logo">
       🎁 <span>CadeauGids</span>
     </a>
 
@@ -14,7 +15,7 @@ const pad = Astro.url.pathname;
       <ul>
         {
           categorieen.map((cat) => {
-            const href = `/cadeaus/${cat.slug}/`;
+            const href = withBase(`cadeaus/${cat.slug}/`);
             const actief = pad === href;
             return (
               <li>
