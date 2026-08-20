@@ -31,7 +31,7 @@ export const categorieen: Categorie[] = [
   {
     slug: 'verjaardag-mama',
     titel: 'Verjaardagscadeaus voor mama',
-    metaTitle: 'Verjaardagscadeaus voor mama — leuke cadeau-ideeën | CadeauGids',
+    metaTitle: 'Verjaardagscadeaus voor mama — leuke cadeau-ideeën | Kadokompas',
     metaDescription:
       'Op zoek naar een verjaardagscadeau voor je moeder? Ontdek cadeau-ideeën voor mama, van verwenmomentjes tot persoonlijke cadeaus.',
     prioriteit: true,
@@ -43,7 +43,7 @@ export const categorieen: Categorie[] = [
   {
     slug: 'partner-vriendin',
     titel: 'Cadeaus voor je partner of vriend(in)',
-    metaTitle: 'Cadeaus voor je partner of vriend(in) — romantische cadeau-ideeën | CadeauGids',
+    metaTitle: 'Cadeaus voor je partner of vriend(in) — romantische cadeau-ideeën | Kadokompas',
     metaDescription:
       'Cadeau-ideeën voor je partner, vriend of vriendin: van romantisch en persoonlijk tot leuk en verrassend. Voor elke gelegenheid een idee.',
     prioriteit: true,
@@ -55,7 +55,7 @@ export const categorieen: Categorie[] = [
   {
     slug: 'verjaardag-zus',
     titel: 'Verjaardagscadeaus voor zus',
-    metaTitle: 'Verjaardagscadeaus voor je zus — leuke cadeau-ideeën | CadeauGids',
+    metaTitle: 'Verjaardagscadeaus voor je zus — leuke cadeau-ideeën | Kadokompas',
     metaDescription:
       'Verjaardagscadeau nodig voor je zus? Bekijk cadeau-ideeën die passen bij elke leeftijd en elk budget.',
     prioriteit: true,
@@ -67,7 +67,7 @@ export const categorieen: Categorie[] = [
   {
     slug: 'verjaardag-broer',
     titel: 'Verjaardagscadeaus voor broer',
-    metaTitle: 'Verjaardagscadeaus voor je broer — leuke cadeau-ideeën | CadeauGids',
+    metaTitle: 'Verjaardagscadeaus voor je broer — leuke cadeau-ideeën | Kadokompas',
     metaDescription:
       'Verjaardagscadeau nodig voor je broer? Bekijk cadeau-ideeën die passen bij elke leeftijd en elk budget.',
     prioriteit: true,
@@ -79,7 +79,7 @@ export const categorieen: Categorie[] = [
   {
     slug: 'verjaardag-papa',
     titel: 'Verjaardagscadeaus voor papa',
-    metaTitle: 'Verjaardagscadeaus voor papa — leuke cadeau-ideeën | CadeauGids',
+    metaTitle: 'Verjaardagscadeaus voor papa — leuke cadeau-ideeën | Kadokompas',
     metaDescription:
       'Op zoek naar een verjaardagscadeau voor je vader? Ontdek cadeau-ideeën voor papa, van verwenmomentjes tot praktische cadeaus.',
     intro: [
@@ -90,7 +90,7 @@ export const categorieen: Categorie[] = [
   {
     slug: 'sinterklaas',
     titel: 'Cadeaus voor Sinterklaas',
-    metaTitle: 'Sinterklaascadeaus — leuke cadeau-ideeën voor pakjesavond | CadeauGids',
+    metaTitle: 'Sinterklaascadeaus — leuke cadeau-ideeën voor pakjesavond | Kadokompas',
     metaDescription:
       'Op zoek naar leuke Sinterklaascadeaus? Ontdek cadeau-ideeën voor in de schoen, als surprise-vulling of voor onder de chocoladeletter.',
     seizoensgebonden: true,

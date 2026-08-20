@@ -1,6 +1,4 @@
-# TODO (opdrachtgever): pas de sitemap-URL hieronder aan zodra het
-# definitieve custom domein bekend is (zie ook astro.config.mjs > SITE_URL).
 User-agent: *
 Allow: /
 
-Sitemap: https://edwindw00.github.io/CadeauGids/sitemap-index.xml
+Sitemap: https://kadokompas.com/sitemap-index.xml

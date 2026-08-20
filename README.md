@@ -1,17 +1,17 @@
-# CadeauGids — cadeau-affiliate website
+# Kadokompas — cadeau-affiliate website
 
-Statische website (Astro) met cadeau-ideeën per ontvanger/gelegenheid, gebouwd
-om via GitHub Pages gehost te worden. Zie ook de oorspronkelijke bouwspecificatie
-in `kadowebsite-bouwspec.md` (indien meegeleverd) voor de volledige requirements.
+Statische website (Astro) met cadeau-ideeën per ontvanger/gelegenheid, gehost via
+GitHub Pages op **kadokompas.com**. Zie ook de oorspronkelijke bouwspecificatie in
+`kadowebsite-bouwspec.md` voor de volledige requirements.
 
-**Werktitel:** "CadeauGids" is een voorlopige naam/huisstijl. Zodra er een
-definitieve sitenaam en domein gekozen zijn, zoek dan in de code op
-"CadeauGids" en pas dit overal aan (zie ook de TODO's hieronder).
+- Repo: [github.com/EdwindW00/CadeauGids](https://github.com/EdwindW00/CadeauGids)
+- Live: **https://kadokompas.com** (nadat de DNS hieronder is ingesteld —
+  zie ["Custom domein"](#custom-domein-kadokompascom))
 
 ## Belangrijk: dit is nog geen kant-en-klare, live site
 
-Dit project is een **technisch complete basis**. Voordat de site live mag/kan
-gaan, moet de opdrachtgever nog een aantal dingen doen — zie de sectie
+Dit project is een **technisch complete basis**. Voordat de site voor bezoekers
+klaar is, moet de opdrachtgever nog een aantal dingen doen — zie de sectie
 ["Wat jij (opdrachtgever) nog moet doen"](#wat-jij-opdrachtgever-nog-moet-doen)
 hieronder.
 
@@ -50,9 +50,10 @@ src/
     index.astro                    Homepage
     cadeaus/[categorie]/index.astro  Genereert /cadeaus/<slug>/ voor elke categorie
     disclaimer.astro, privacy.astro  Wettelijk verplichte pagina's
+  utils/url.ts        withBase()-helper voor interne links (zie "Base-path" hieronder)
   styles/global.css    Kleuren, typografie, componentstijlen ("warm en persoonlijk")
 public/
-  robots.txt, favicon.svg, images/placeholder-product.svg, CNAME.example
+  robots.txt, favicon.svg, images/placeholder-product.svg, CNAME
 .github/workflows/deploy.yml   Automatische build + deploy naar GitHub Pages
 ```
 
@@ -92,31 +93,40 @@ verder niets in de code aan te passen (zie `src/components/ProductCard.astro`).
 
 ## Deployen naar GitHub Pages
 
-1. Maak een GitHub-repository aan en push deze code naar de `main`-branch.
-2. Ga in de repository naar **Settings → Pages** en zet "Source" op
-   **"GitHub Actions"**.
-3. Elke push naar `main` bouwt en deployt de site automatisch
-   (`.github/workflows/deploy.yml`).
+Al ingericht: de repo staat op GitHub, Pages staat aan met "Source: GitHub
+Actions", en elke push naar `main` bouwt en deployt de site automatisch
+(`.github/workflows/deploy.yml`).
 
-### Custom domein koppelen (later)
+### Custom domein (kadokompas.com)
 
-1. Vervang de placeholder-URL in `astro.config.mjs` (`SITE_URL`) en in
-   `public/robots.txt` door het echte domein.
-2. Hernoem `public/CNAME.example` naar `public/CNAME` en zet het domein erin
-   (één regel, zonder `https://`).
-3. Stel bij je domeinregistrar de DNS in volgens de
-   [GitHub Pages-documentatie](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site).
+`astro.config.mjs` en `public/CNAME` zijn al ingesteld op `kadokompas.com`. Wat
+nog moet gebeuren (bij je domeinregistrar, niet in deze code):
 
-Gebruik je (nog) geen custom domein, maar `<gebruikersnaam>.github.io/<repo-naam>`?
-Zet dan in `astro.config.mjs` de `base`-optie op `/<repo-naam>/`.
+1. Stel bij de DNS-instellingen van `kadokompas.com` **4 A-records** in op de
+   apex/root (`@`) die naar GitHub Pages wijzen:
+   `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`.
+2. Wil je ook `www.kadokompas.com` laten werken? Voeg een **CNAME-record** toe
+   voor `www` naar `edwindw00.github.io`.
+3. Wacht tot de DNS is doorgevoerd (kan tot 24u duren) — GitHub Pages
+   detecteert het domein dan automatisch en regelt zelf een HTTPS-certificaat.
+4. Controleer daarna in **Settings → Pages** op GitHub of "Enforce HTTPS"
+   aangevinkt staat.
+
+Volledige uitleg: [GitHub Pages-documentatie over custom domeinen](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site).
+
+Zolang de DNS nog niet actief is, blijft de site ook bereikbaar op
+`https://edwindw00.github.io/CadeauGids/` (let op: als je ooit weer zónder
+custom domein zou draaien, moet `base` in `astro.config.mjs` terug naar
+`/CadeauGids/` — zie de comments in dat bestand en in `src/utils/url.ts`).
 
 ## Wat jij (opdrachtgever) nog moet doen
 
 Dit staat ook zo in de oorspronkelijke bouwspecificatie — dit project regelt
 bewust geen accounts, geld of domeinen:
 
-- [ ] Definitieve sitenaam + domeinnaam kiezen en registreren, en overal
-      "CadeauGids" / de placeholder-URL vervangen (zie hierboven).
+- [x] Definitieve sitenaam (Kadokompas) + domeinnaam (kadokompas.com) gekozen.
+- [ ] DNS voor `kadokompas.com` instellen bij je registrar (zie hierboven) —
+      dit kan alleen jij doen, ik heb geen toegang tot je domeinregistrar.
 - [ ] Aanmelden bij bol.com Partnerprogramma, TradeTracker en Awin.
 - [ ] Echte affiliate-links verkrijgen en invullen in de productbestanden
       (`link` + `netwerk` per product, zie hierboven).
@@ -129,7 +139,6 @@ bewust geen accounts, geld of domeinen:
       contact-e-mailadres, datum).
 - [ ] Productfoto's toevoegen (nu staat overal een neutrale placeholder-
       afbeelding, `public/images/placeholder-product.svg`).
-- [ ] GitHub-repository aanmaken + Pages inschakelen (zie "Deployen" hierboven).
 - [ ] Sinterklaas-pagina jaarlijks verversen: de structuur is bewust evergreen
       opgezet (`src/data/categorieen.ts`, categorie `sinterklaas`), dus alleen
       de productlijst in `src/content/producten/sinterklaas/` hoeft elk jaar
