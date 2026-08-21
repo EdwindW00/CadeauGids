@@ -22,7 +22,11 @@
   --shadow-soft: 0 8px 24px rgba(58, 46, 40, 0.08);
   --shadow-hover: 0 12px 28px rgba(58, 46, 40, 0.14);
 
-  --max-width: 1120px;
+  /* Groeit mee met brede/curved schermen (tot 1920px), blijft op normale
+     schermen nagenoeg gelijk aan de oude vaste 1120px. Leesteksten (intro's,
+     disclaimer/privacy) hebben hun eigen, kleinere max-width (zie *.astro
+     <style>-blokken) en worden dus niet onleesbaar breed. */
+  --max-width: clamp(1120px, 82vw, 1920px);
 }
 
 * {
@@ -139,12 +143,12 @@ img {
   gap: 1.5rem;
 }
 
-.grid-categorieen {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
+.grid-categorieen,
 .grid-producten {
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  /* 1fr laat kaarten meegroeien i.p.v. vastklikken op het minimum, dus op
+     brede schermen worden het vooral wat meer kolommen van een prettige
+     breedte -- geen rij met piepkleine kaartjes. */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .sr-only {
