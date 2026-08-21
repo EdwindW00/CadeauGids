@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Astro 7 vereist Node >=22.12.0 (zie package.json > engines).
+  NODE_VERSION = "22.12.0"
