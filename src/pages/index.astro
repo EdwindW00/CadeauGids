@@ -10,12 +10,13 @@ const description =
 
 <BaseLayout title={title} description={description}>
   <section class="hero container">
-    <span class="badge">Cadeau-ideeën, overzichtelijk per persoon</span>
+    <p class="eyebrow">Cadeau-ideeën, overzichtelijk per persoon</p>
     <h1>Op zoek naar het perfecte cadeau?</h1>
     <p class="hero-tekst">
       Kadokompas verzamelt cadeau-ideeën per ontvanger en gelegenheid, zodat je niet
-      eindeloos hoeft te scrollen door webshops. Kies hieronder voor wie je een
-      cadeau zoekt en blader door onze suggesties.
+      eindeloos hoeft te scrollen door webshops. Op dit moment vind je hier meer dan
+      20 suggesties, verdeeld over {categorieen.length} categorieën -- kies hieronder
+      voor wie je een cadeau zoekt.
     </p>
   </section>
 
@@ -54,6 +55,15 @@ const description =
     flex-direction: column;
     gap: 0.9rem;
     max-width: 70ch;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .hero-tekst {

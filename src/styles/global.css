@@ -15,12 +15,11 @@
   --font-heading: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  --radius-lg: 22px;
-  --radius-md: 14px;
+  /* Eén bewuste, herkenbare afronding voor alle "grote" elementen (kaarten,
+     knoppen, badges) en één voor kleine controls (inputs, toggle) -- geen
+     losse rounded-2xl/pil-vormen per component. */
+  --radius-lg: 12px;
   --radius-sm: 8px;
-
-  --shadow-soft: 0 8px 24px rgba(58, 46, 40, 0.08);
-  --shadow-hover: 0 12px 28px rgba(58, 46, 40, 0.14);
 
   /* Groeit mee met brede/curved schermen (tot 1920px), blijft op normale
      schermen nagenoeg gelijk aan de oude vaste 1120px. Leesteksten (intro's,
@@ -89,7 +88,7 @@ img {
   align-items: center;
   gap: 0.4em;
   padding: 0.65em 1.4em;
-  border-radius: 999px;
+  border-radius: var(--radius-lg);
   background: var(--color-primary);
   color: #fff;
   text-decoration: none;
@@ -117,7 +116,7 @@ img {
 .badge {
   display: inline-block;
   padding: 0.2em 0.75em;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: var(--color-accent);
   color: #3a2e28;
   font-size: 0.75rem;
@@ -129,12 +128,11 @@ img {
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-hover);
+  border-color: var(--color-primary);
   transform: translateY(-2px);
 }
 
