@@ -11,7 +11,12 @@ const pad = Astro.url.pathname;
       🎁 <span>Kadokompas</span>
     </a>
 
-    <nav aria-label="Hoofdnavigatie" class="nav">
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="hoofdnavigatie" data-nav-toggle>
+      <span class="sr-only">Menu</span>
+      <span class="nav-toggle-icon" aria-hidden="true"></span>
+    </button>
+
+    <nav aria-label="Hoofdnavigatie" class="nav" id="hoofdnavigatie" data-nav>
       <ul>
         {
           categorieen.map((cat) => {
@@ -44,7 +49,8 @@ const pad = Astro.url.pathname;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
     padding-block: 0.9rem;
   }
 
@@ -58,6 +64,64 @@ const pad = Astro.url.pathname;
     align-items: center;
     gap: 0.4em;
     white-space: nowrap;
+  }
+
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex: none;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-alt);
+    cursor: pointer;
+  }
+
+  .nav-toggle-icon,
+  .nav-toggle-icon::before,
+  .nav-toggle-icon::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-text);
+    transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
+  }
+
+  .nav-toggle-icon {
+    position: relative;
+  }
+
+  .nav-toggle-icon::before,
+  .nav-toggle-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .nav-toggle-icon::before {
+    top: -6px;
+  }
+
+  .nav-toggle-icon::after {
+    top: 6px;
+  }
+
+  .nav-toggle[aria-expanded='true'] .nav-toggle-icon {
+    background: transparent;
+  }
+
+  .nav-toggle[aria-expanded='true'] .nav-toggle-icon::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded='true'] .nav-toggle-icon::after {
+    top: 0;
+    transform: rotate(-45deg);
   }
 
   .nav ul {
@@ -84,10 +148,56 @@ const pad = Astro.url.pathname;
     border-color: var(--color-primary);
   }
 
+  /* Onder 720px wordt de horizontale navigatie een uitklapbaar menu, zodat
+     de (sticky) header niet permanent 2 regels navigatie hoeft te tonen. */
   @media (max-width: 720px) {
-    .header-inner {
+    .nav-toggle {
+      display: inline-flex;
+    }
+
+    .nav {
+      display: none;
+      flex-basis: 100%;
+      order: 3;
+      margin-top: 0.5rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .nav[data-open] {
+      display: block;
+    }
+
+    .nav ul {
       flex-direction: column;
-      align-items: flex-start;
+      gap: 0;
+    }
+
+    .nav ul li {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav ul li:last-child {
+      border-bottom: none;
+    }
+
+    .nav a {
+      display: block;
+      padding: 0.8rem 0.25rem;
+      font-size: 1rem;
     }
   }
 </style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      const willOpen = !nav.hasAttribute('data-open');
+      nav.toggleAttribute('data-open', willOpen);
+      toggle.setAttribute('aria-expanded', String(willOpen));
+    });
+  }
+</script>
