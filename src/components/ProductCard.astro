@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { product } = Astro.props;
-const { naam, beschrijving, afbeelding, prijsindicatie, link, netwerk, prijssegment, leeftijd, uitgelicht } =
+const { naam, beschrijving, afbeelding, prijsindicatie, prijsMin, prijsMax, link, netwerk, leeftijd, uitgelicht } =
   product.data;
 
 // Zodra `netwerk` iets anders is dan 'n.v.t.' (dus een echte affiliate-link),
@@ -22,7 +22,12 @@ const relAttr = ['noopener', ...(isAffiliate ? ['sponsored', 'nofollow'] : [])].
 const imgSrc = /^https?:\/\//.test(afbeelding) ? afbeelding : withBase(afbeelding);
 ---
 
-<article class:list={['card product-card', { uitgelicht }]} data-prijssegment={prijssegment} data-leeftijd={leeftijd}>
+<article
+  class:list={['card product-card', { uitgelicht }]}
+  data-prijs-min={prijsMin}
+  data-prijs-max={prijsMax}
+  data-leeftijd={leeftijd?.join(' ')}
+>
   {uitgelicht && <span class="badge badge-uitgelicht">Uitgelicht</span>}
   <img src={imgSrc} alt={naam} loading="lazy" width="600" height="400" />
   <div class="product-body">

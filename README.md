@@ -77,19 +77,31 @@ Maak (of bewerk) een markdown-bestand in `src/content/producten/<categorie-slug>
 naam: 'Naam van het product'
 beschrijving: 'Korte omschrijving, 1-2 zinnen.'
 afbeelding: '/images/mijn-foto.jpg'   # of een volledige URL
-prijsindicatie: '€20 - €35'
+prijsindicatie: '€20 - €35'            # vrije weergavetekst, mag ook "Tot €10" zijn
+prijsMin: 20                           # zelfde bedrag als kaal getal, t.b.v. de prijsslider
+prijsMax: 35                           # idem -- moet overeenkomen met prijsindicatie
 link: '#'                              # placeholder tot er een echte affiliate-link is
 netwerk: 'n.v.t.'                      # 'bol.com' | 'TradeTracker' | 'Awin' | 'n.v.t.'
 categorie: 'verjaardag-mama'           # moet matchen met een slug in categorieen.ts
-prijssegment: 'midden'                 # optioneel: 'budget' | 'midden' | 'premium'
-leeftijd: 'volwassene'                 # optioneel: 'kind' | 'tiener' | 'volwassene' | 'senior'
+leeftijd: ['volwassene']               # optioneel, mag meerdere: ['tiener', 'volwassene']
 uitgelicht: false                      # optioneel: toont het product bovenaan met een badge
 ---
 ```
 
+`leeftijd` mag leeg blijven (geen leeftijdslabel), één waarde bevatten, of
+meerdere — `'kind' | 'tiener' | 'volwassene' | 'senior'`. Op de
+categoriepagina worden alleen leeftijden getoond die ook echt bij minstens
+één product in die categorie voorkomen; kies je er meerdere aan, dan tonen we
+producten die bij *minstens één* daarvan passen.
+
 **Zodra je een echte affiliate-link hebt:** vul `link` en `netwerk` in. De site
 voegt dan automatisch `rel="sponsored nofollow"` toe aan die link — je hoeft
 verder niets in de code aan te passen (zie `src/components/ProductCard.astro`).
+
+**De prijsslider op de categoriepagina** (`src/components/CategoryFilters.astro`)
+gebruikt automatisch de laagste `prijsMin` en hoogste `prijsMax` van de
+producten in die categorie als schuifgrenzen — daar hoef je zelf niets voor
+in te stellen, zolang `prijsMin`/`prijsMax` per product maar kloppen.
 
 ## Deployen naar GitHub Pages
 

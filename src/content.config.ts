@@ -14,15 +14,22 @@ const producten = defineCollection({
     // URL of lokaal pad (bv. /images/mijn-product.jpg). Zonder opgave wordt
     // een neutrale placeholder-afbeelding gebruikt.
     afbeelding: z.string().default('/images/placeholder-product.svg'),
+    // Vrije weergavetekst, bv. "€20 - €35" of "Tot €10".
     prijsindicatie: z.string(),
+    // Zelfde bedrag als hierboven, maar als kale getallen (zonder €) t.b.v.
+    // de prijsslider-filter op de categoriepagina's. prijsMin mag 0 zijn.
+    prijsMin: z.number(),
+    prijsMax: z.number(),
     // Placeholder-URL totdat er een echte affiliate-link is (bv. "#").
     link: z.string(),
     netwerk: z.enum(['bol.com', 'TradeTracker', 'Awin', 'n.v.t.']).default('n.v.t.'),
     // Moet overeenkomen met een `slug` uit src/data/categorieen.ts.
     categorie: z.string(),
-    // Optionele tags t.b.v. de filters op de categoriepagina's.
-    prijssegment: z.enum(['budget', 'midden', 'premium']).optional(),
-    leeftijd: z.enum(['kind', 'tiener', 'volwassene', 'senior']).optional(),
+    // Optioneel, en er mogen meerdere leeftijden tegelijk (bv. geschikt voor
+    // zowel tiener als volwassene): [tiener, volwassene]. T.b.v. het
+    // leeftijdsfilter op de categoriepagina's, waar je meerdere opties
+    // tegelijk kan aanvinken.
+    leeftijd: z.array(z.enum(['kind', 'tiener', 'volwassene', 'senior'])).optional(),
     // Zet op true om een product bovenaan / uitgelicht te tonen.
     uitgelicht: z.boolean().default(false),
   }),

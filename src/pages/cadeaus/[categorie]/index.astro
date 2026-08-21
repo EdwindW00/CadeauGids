@@ -17,6 +17,21 @@ const { categorie } = Astro.props;
 const alleProducten = await getCollection('producten', (entry) => entry.data.categorie === categorie.slug);
 // Uitgelichte producten eerst.
 const producten = alleProducten.sort((a, b) => Number(b.data.uitgelicht) - Number(a.data.uitgelicht));
+
+// Grenzen van de prijsslider: op basis van de daadwerkelijke producten in
+// déze categorie, zodat de slider nooit een breder bereik toont dan wat er
+// te vinden is.
+const prijzenMin = producten.map((p) => p.data.prijsMin);
+const prijzenMax = producten.map((p) => p.data.prijsMax);
+const minPrijs = prijzenMin.length ? Math.min(...prijzenMin) : 0;
+const maxPrijs = prijzenMax.length ? Math.max(...prijzenMax) : 0;
+
+// Alleen leeftijdsopties tonen die ook echt bij een product in deze
+// categorie voorkomen -- anders kun je een optie aanvinken die altijd op
+// "geen resultaten" uitkomt.
+const LEEFTIJD_VOLGORDE = ['kind', 'tiener', 'volwassene', 'senior'] as const;
+const aanwezigeLeeftijden = new Set(producten.flatMap((p) => p.data.leeftijd ?? []));
+const beschikbareLeeftijden = LEEFTIJD_VOLGORDE.filter((l) => aanwezigeLeeftijden.has(l));
 ---
 
 <BaseLayout title={categorie.metaTitle} description={categorie.metaDescription}>
@@ -27,7 +42,9 @@ const producten = alleProducten.sort((a, b) => Number(b.data.uitgelicht) - Numbe
   </section>
 
   <section class="container">
-    {producten.length > 0 && <CategoryFilters />}
+    {producten.length > 0 && (
+      <CategoryFilters minPrijs={minPrijs} maxPrijs={maxPrijs} leeftijdOpties={beschikbareLeeftijden} />
+    )}
 
     {
       producten.length > 0 ? (

@@ -136,6 +136,14 @@ img {
   transform: translateY(-2px);
 }
 
+/* .card zet zelf `display`, wat zonder dit de browserstandaard voor het
+   [hidden]-attribuut overstemt (gelijke specificiteit, maar auteurs-CSS
+   wint van de UA-stylesheet). Nodig zodra JS `element.hidden = true` zet,
+   zoals de filters in CategoryFilters.astro doen. */
+.card[hidden] {
+  display: none;
+}
+
 .grid {
   display: grid;
   gap: 1.5rem;

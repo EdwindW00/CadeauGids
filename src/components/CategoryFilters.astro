@@ -1,30 +1,66 @@
 ---
-// Simpel, progressive-enhancement filter: werkt volledig zonder JS (alle
-// producten zichtbaar), en filtert client-side op prijssegment/leeftijd
-// zodra JS beschikbaar is. Geen framework/build-stap nodig.
+// Simpel, progressive-enhancement filter: zonder JS staan gewoon alle
+// producten open (sliderwaarden op hun uiterste stand), en filtert
+// client-side op prijs/leeftijd zodra JS beschikbaar is. Geen framework of
+// build-stap nodig.
+
+interface Props {
+  /** Ondergrens van de prijsslider -- de laagste prijsMin in deze categorie. */
+  minPrijs: number;
+  /** Bovengrens van de prijsslider -- de hoogste prijsMax in deze categorie. */
+  maxPrijs: number;
+  /** Alleen leeftijden die ook echt bij een product in deze categorie voorkomen. */
+  leeftijdOpties: string[];
+}
+
+const { minPrijs, maxPrijs, leeftijdOpties } = Astro.props;
+
+const LEEFTIJD_LABELS: Record<string, string> = {
+  kind: 'Kind',
+  tiener: 'Tiener',
+  volwassene: 'Volwassene',
+  senior: 'Senior',
+};
+
+// Bij een enkel prijspunt (min === max) heeft een slider niets om te
+// verslepen -- geef 'm dan een klein kunstmatig bereik zodat 'ie bruikbaar blijft.
+const sliderMin = minPrijs;
+const sliderMax = maxPrijs > minPrijs ? maxPrijs : minPrijs + 1;
 ---
 
 <div class="filters" data-filters>
-  <div class="filter-groep">
-    <label for="filter-prijs">Prijssegment</label>
-    <select id="filter-prijs" data-filter="prijssegment">
-      <option value="">Alle prijzen</option>
-      <option value="budget">Budget</option>
-      <option value="midden">Middensegment</option>
-      <option value="premium">Premium</option>
-    </select>
+  <div class="filter-groep filter-prijs">
+    <span class="filter-label">Prijs</span>
+
+    <div class="price-slider" data-price-slider>
+      <div class="price-slider-track"></div>
+      <div class="price-slider-range" data-price-range></div>
+      <input type="range" min={sliderMin} max={sliderMax} step="1" value={sliderMin} data-price-min aria-label="Minimumprijs" />
+      <input type="range" min={sliderMin} max={sliderMax} step="1" value={sliderMax} data-price-max aria-label="Maximumprijs" />
+    </div>
+
+    <div class="price-slider-labels">
+      <span data-price-min-label>€{sliderMin}</span>
+      <span aria-hidden="true">–</span>
+      <span data-price-max-label>€{sliderMax}</span>
+    </div>
   </div>
 
-  <div class="filter-groep">
-    <label for="filter-leeftijd">Leeftijd</label>
-    <select id="filter-leeftijd" data-filter="leeftijd">
-      <option value="">Alle leeftijden</option>
-      <option value="kind">Kind</option>
-      <option value="tiener">Tiener</option>
-      <option value="volwassene">Volwassene</option>
-      <option value="senior">Senior</option>
-    </select>
-  </div>
+  {
+    leeftijdOpties.length > 0 && (
+      <div class="filter-groep">
+        <span class="filter-label">Leeftijd</span>
+        <div class="leeftijd-opties">
+          {leeftijdOpties.map((optie) => (
+            <label class="leeftijd-chip">
+              <input type="checkbox" value={optie} data-filter-leeftijd />
+              <span>{LEEFTIJD_LABELS[optie] ?? optie}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    )
+  }
 
   <p class="filter-leeg" data-filter-leeg hidden>Geen cadeaus gevonden met deze filters.</p>
 </div>
@@ -33,59 +69,213 @@
   .filters {
     display: flex;
     flex-wrap: wrap;
-    align-items: end;
-    gap: 1.25rem;
+    align-items: start;
+    gap: 1.75rem;
     margin-bottom: 1.75rem;
   }
 
   .filter-groep {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.5rem;
   }
 
-  .filter-groep label {
+  .filter-prijs {
+    min-width: 220px;
+    flex: 1 1 260px;
+    max-width: 360px;
+  }
+
+  .filter-label {
     font-size: 0.8rem;
     font-weight: 700;
     color: var(--color-text-muted);
   }
 
-  .filter-groep select {
-    padding: 0.5em 0.8em;
+  /* --- Prijsslider (twee overlappende range-inputs) --- */
+  .price-slider {
+    position: relative;
+    height: 22px;
+    margin-top: 0.35rem;
+  }
+
+  .price-slider-track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-border);
+    border-radius: 2px;
+    transform: translateY(-50%);
+  }
+
+  .price-slider-range {
+    position: absolute;
+    top: 50%;
+    height: 4px;
+    background: var(--color-primary);
+    border-radius: 2px;
+    transform: translateY(-50%);
+  }
+
+  .price-slider input[type='range'] {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 18px;
+    margin: 0;
+    transform: translateY(-50%);
+    background: transparent;
+    pointer-events: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .price-slider input[type='range']::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    background: transparent;
+    height: 18px;
+  }
+
+  .price-slider input[type='range']::-moz-range-track {
+    background: transparent;
+    border: none;
+    height: 18px;
+  }
+
+  .price-slider input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    pointer-events: auto;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    border: 3px solid var(--color-card-bg);
+    outline: 1px solid var(--color-primary);
+    cursor: pointer;
+  }
+
+  .price-slider input[type='range']::-moz-range-thumb {
+    pointer-events: auto;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    border: 3px solid var(--color-card-bg);
+    outline: 1px solid var(--color-primary);
+    cursor: pointer;
+  }
+
+  .price-slider input[type='range']:focus-visible::-webkit-slider-thumb {
+    outline-width: 2px;
+    outline-offset: 2px;
+  }
+
+  .price-slider input[type='range']:focus-visible::-moz-range-thumb {
+    outline-width: 2px;
+    outline-offset: 2px;
+  }
+
+  .price-slider-labels {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
+  /* --- Leeftijd: aanvinkbare chips, meerdere tegelijk --- */
+  .leeftijd-opties {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .leeftijd-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4em 0.85em;
     border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
     background: var(--color-card-bg);
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    color: var(--color-text);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .leeftijd-chip:hover {
+    border-color: var(--color-primary);
+  }
+
+  .leeftijd-chip.actief {
+    border-color: var(--color-primary);
+    background: var(--color-bg-alt);
+    color: var(--color-primary-dark);
+    font-weight: 700;
+  }
+
+  .leeftijd-chip input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+  }
+
+  .leeftijd-chip input:focus-visible ~ span {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
   .filter-leeg {
+    flex-basis: 100%;
     color: var(--color-text-muted);
     font-style: italic;
+    margin: 0;
   }
 </style>
 
 <script>
   function initFilters() {
-    const filterWrap = document.querySelector('[data-filters]');
-    const grid = document.querySelector('[data-producten-grid]');
+    const filterWrap = document.querySelector<HTMLElement>('[data-filters]');
+    const grid = document.querySelector<HTMLElement>('[data-producten-grid]');
     if (!filterWrap || !grid) return;
 
-    const selects = filterWrap.querySelectorAll<HTMLSelectElement>('select[data-filter]');
-    const leegMelding = filterWrap.querySelector<HTMLElement>('[data-filter-leeg]');
     const cards = Array.from(grid.querySelectorAll<HTMLElement>('.product-card'));
+    const leegMelding = filterWrap.querySelector<HTMLElement>('[data-filter-leeg]');
+
+    const sliderWrap = filterWrap.querySelector<HTMLElement>('[data-price-slider]');
+    const minInput = sliderWrap?.querySelector<HTMLInputElement>('[data-price-min]') ?? null;
+    const maxInput = sliderWrap?.querySelector<HTMLInputElement>('[data-price-max]') ?? null;
+    const rangeEl = sliderWrap?.querySelector<HTMLElement>('[data-price-range]') ?? null;
+    const minLabel = filterWrap.querySelector<HTMLElement>('[data-price-min-label]');
+    const maxLabel = filterWrap.querySelector<HTMLElement>('[data-price-max-label]');
+
+    const leeftijdChecks = Array.from(filterWrap.querySelectorAll<HTMLInputElement>('[data-filter-leeftijd]'));
 
     function toepassen() {
-      const actief: Record<string, string> = {};
-      selects.forEach((select) => {
-        const key = select.dataset.filter;
-        if (key && select.value) actief[key] = select.value;
-      });
+      const prijsMin = minInput ? Number(minInput.value) : -Infinity;
+      const prijsMax = maxInput ? Number(maxInput.value) : Infinity;
+      const gekozenLeeftijden = leeftijdChecks.filter((check) => check.checked).map((check) => check.value);
 
       let zichtbaar = 0;
       cards.forEach((card) => {
-        const matcht = Object.entries(actief).every(([key, waarde]) => card.dataset[key] === waarde);
+        const cardMin = Number(card.dataset.prijsMin ?? 0);
+        const cardMax = Number(card.dataset.prijsMax ?? 0);
+        // Toon een product zodra zijn prijsrange het gekozen budget raakt.
+        const binnenPrijs = cardMax >= prijsMin && cardMin <= prijsMax;
+
+        const cardLeeftijden = (card.dataset.leeftijd ?? '').split(' ').filter(Boolean);
+        const matchtLeeftijd =
+          gekozenLeeftijden.length === 0 || cardLeeftijden.some((l) => gekozenLeeftijden.includes(l));
+
+        const matcht = binnenPrijs && matchtLeeftijd;
         card.hidden = !matcht;
         if (matcht) zichtbaar++;
       });
@@ -93,7 +283,51 @@
       if (leegMelding) leegMelding.hidden = zichtbaar !== 0;
     }
 
-    selects.forEach((select) => select.addEventListener('change', toepassen));
+    function updateSliderVisual(actieveInput?: HTMLInputElement) {
+      if (!minInput || !maxInput || !rangeEl) return;
+
+      const bounds = { min: Number(minInput.min), max: Number(minInput.max) };
+      let minVal = Number(minInput.value);
+      let maxVal = Number(maxInput.value);
+
+      if (minVal > maxVal) {
+        // Handles mogen niet voorbij elkaar -- de handle die net bewogen is, leidt.
+        if (actieveInput === maxInput) {
+          minVal = maxVal;
+          minInput.value = String(minVal);
+        } else {
+          maxVal = minVal;
+          maxInput.value = String(maxVal);
+        }
+      }
+
+      const span = bounds.max - bounds.min || 1;
+      const leftPct = ((minVal - bounds.min) / span) * 100;
+      const rightPct = ((maxVal - bounds.min) / span) * 100;
+      rangeEl.style.left = `${leftPct}%`;
+      rangeEl.style.right = `${100 - rightPct}%`;
+
+      if (minLabel) minLabel.textContent = `€${minVal}`;
+      if (maxLabel) maxLabel.textContent = `€${maxVal}`;
+    }
+
+    function onPrijsInput(event: Event) {
+      updateSliderVisual(event.currentTarget as HTMLInputElement);
+      toepassen();
+    }
+
+    minInput?.addEventListener('input', onPrijsInput);
+    maxInput?.addEventListener('input', onPrijsInput);
+
+    leeftijdChecks.forEach((check) => {
+      check.addEventListener('change', () => {
+        check.closest('.leeftijd-chip')?.classList.toggle('actief', check.checked);
+        toepassen();
+      });
+    });
+
+    updateSliderVisual();
+    toepassen();
   }
 
   initFilters();
